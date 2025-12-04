@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>สั่งอาหารออนไลน์ - ร้านอะไรก็ไม่รู้</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1><i class="fas fa-utensils"></i> ร้านอร่อยจัง</h1>
+            <div class="search-box">
+                <i class="fas fa-search"></i>
+                <input type="text" id="searchInput" placeholder="ค้นหาเมนู (เช่น กะเพรา, น้ำ)...">
+            </div>
+        </header>
+
+        <section class="section">
+            <h2>เมนูแนะนำ</h2>
+            <div class="horizontal-scroll" id="recommendedList"></div>
+        </section>
+
+        <section class="section">
+            <h2>หมวดหมู่</h2>
+            <div class="category-list" id="categoryList">
+                <button class="cat-btn active" onclick="filterCategory('all')">ทั้งหมด</button>
+                <button class="cat-btn" onclick="filterCategory('อาหารจานเดียว')">จานเดียว</button>
+                <button class="cat-btn" onclick="filterCategory('ของทานเล่น')">ของทานเล่น</button>
+                <button class="cat-btn" onclick="filterCategory('เครื่องดื่ม')">เครื่องดื่ม</button>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>รายการอาหารทั้งหมด</h2>
+            <div class="menu-grid" id="menuList"></div>
+        </section>
+    </div>
+
+    <div class="floating-cart" onclick="toggleCart()">
+        <div class="cart-info"><span id="cartCount">0</span> รายการ</div>
+        <div class="cart-total">฿<span id="cartTotal">0</span></div>
+        <div class="cart-icon"><i class="fas fa-shopping-basket"></i> ดูตระกร้า</div>
+    </div>
+
+    <div id="cartModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>รายการที่สั่ง</h2>
+                <span class="close" onclick="toggleCart()">&times;</span>
+            </div>
+            <div class="modal-body" id="cartItems"></div>
+            <div class="table-input">
+                <label>เบอร์โต๊ะ / โซน:</label>
+                <input type="text" id="tableNumber" placeholder="ระบุเบอร์โต๊ะ (เช่น 5)">
+            </div>
+            <div class="modal-footer">
+                <div class="grand-total">รวมทั้งสิ้น: ฿<span id="modalTotal">0</span></div>
+                <button class="btn-confirm" onclick="sendToTelegram()">ยืนยันสั่งออเดอร์ <i class="fab fa-telegram-plane"></i></button>
+            </div>
+        </div>
+    </div>
+
+    <div id="itemModal" class="modal" style="z-index: 210;">
+        <div class="modal-content item-detail-content">
+            <div class="modal-header">
+                <h2 id="modalItemName">ชื่อเมนู</h2>
+                <span class="close" onclick="closeItemModal()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <img id="modalItemImage" src="" alt="Food" style="width:100%; height:200px; object-fit:cover; border-radius:15px; margin-bottom:15px;">
+                
+                <div class="qty-control">
+                    <button class="qty-btn" onclick="adjustQty(-1)"><i class="fas fa-minus"></i></button>
+                    <span id="modalQty">1</span>
+                    <button class="qty-btn" onclick="adjustQty(1)"><i class="fas fa-plus"></i></button>
+                </div>
+
+                <div class="note-input">
+                    <label>หมายเหตุ (ถ้ามี):</label>
+                    <input type="text" id="modalNote" placeholder="เช่น ไม่ใส่ผัก, เผ็ดน้อย...">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-confirm" onclick="confirmAddToCart()">เพิ่มลงตะกร้า - ฿<span id="modalItemPrice">0</span></button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
